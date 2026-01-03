@@ -885,6 +885,7 @@ void RSDK::LoadMods(bool newOnly, bool32 getVersion)
             PrintLog(PRINT_ERROR, "Mods folder scanning error: Could not list directory %s", modPathStr.c_str());
         }
         RSDK::PrintLog(RSDK::PRINT_NORMAL, "[MOD_FLOW] LoadMods: Finished direct mod folder scan.");
+		}
     }
 #endif // !__PS3__ && GCC >=8 ELSE
 
