@@ -24,11 +24,6 @@ bool RenderDevice::Init()
     // Get current display mode to check for 1080i or 576p
     SDL_DisplayMode currentDisplayMode;
     if (SDL_GetDesktopDisplayMode(0, &currentDisplayMode) == 0) {
-		if (currentDisplayMode.refresh_rate == 50)
-		{
-			PrintLog(PRINT_NORMAL, "PS3: 50hz monitor detected, forcing 60hz");
-			videoSettings.refreshRate = 60;
-		}
         // Target dimensions for overrides
         const int32 target720pWidth = 1280;
         const int32 target720pHeight = 720;

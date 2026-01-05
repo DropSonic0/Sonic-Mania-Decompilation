@@ -45,6 +45,10 @@ PSL1GHT_InitModes(_THIS)
     assert(videoGetState(0, 0, &state) == 0); // Get the state of the display
     assert(state.state == 0); // Make sure display is enabled
 
+	if (state.displayMode.resolution == VIDEO_RESOLUTION_576) {
+		state.displayMode.resolution = VIDEO_RESOLUTION_720;
+	}
+
     // Get the current resolution
 	videoResolution res;
     assert(videoGetResolution(state.displayMode.resolution, &res) == 0);
