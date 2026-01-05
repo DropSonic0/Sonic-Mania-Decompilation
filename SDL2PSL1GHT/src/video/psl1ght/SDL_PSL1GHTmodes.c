@@ -45,6 +45,10 @@ PSL1GHT_InitModes(_THIS)
     assert(videoGetState(0, 0, &state) == 0); // Get the state of the display
     assert(state.state == 0); // Make sure display is enabled
 
+	if (state.displayMode.resolution == VIDEO_RESOLUTION_576) {
+		state.displayMode.resolution = VIDEO_RESOLUTION_480;
+	}
+
     // Get the current resolution
 	videoResolution res;
     assert(videoGetResolution(state.displayMode.resolution, &res) == 0);
@@ -61,14 +65,7 @@ PSL1GHT_InitModes(_THIS)
     mode.driverdata = modedata;
 
     /* Setup the display to it's  default mode */
-    videoDisplayMode *mode_options = NULL;
-    videoDisplayMode pal60_mode;
-    if (state.displayMode.resolution == VIDEO_RESOLUTION_576) {
-        memcpy(&pal60_mode, &state.displayMode, sizeof(videoDisplayMode));
-        pal60_mode.refreshRates = VIDEO_REFRESH_60HZ;
-        mode_options = &pal60_mode;
-    }
-    assert(videoConfigure(0, &modedata->vconfig, mode_options, 1) == 0);
+    assert(videoConfigure(0, &modedata->vconfig, NULL, 1) == 0);
 
 	// Wait until RSX is ready
 	do{
