@@ -796,9 +796,18 @@ void RSDK::LoadMods(bool newOnly, bool32 getVersion)
         RSDK::PrintLog(RSDK::PRINT_NORMAL, "[MOD_FLOW] LoadMods: Finished direct mod folder scan.");
     }
 #else // PS3 or older GCC path
-    if (PS3_PathExists(modPathStr) && PS3_IsDirectory(modPathStr)) {
-        RSDK::PrintLog(RSDK::PRINT_NORMAL, "[MOD_FLOW] LoadMods: Processing modconfig.ini entries...");
-        string mod_config_path = modPathStr + "/modconfig.ini";
+    const char *mod_paths[] = {
+        "/dev_usb000/mods/",
+        "/dev_usb001/mods/",
+        "/dev_usb002/mods/",
+        "/dev_usb003/mods/",
+    };
+    for (const char* path : mod_paths) {
+        std::string modPathStr = path;
+        RSDK::PrintLog(RSDK::PRINT_NORMAL, "[MODS_LOAD]   Scanning mods directory: '%s'", modPathStr.c_str());
+        if (PS3_PathExists(modPathStr) && PS3_IsDirectory(modPathStr)) {
+            RSDK::PrintLog(RSDK::PRINT_NORMAL, "[MOD_FLOW] LoadMods: Processing modconfig.ini entries...");
+            string mod_config_path = modPathStr + "/modconfig.ini";
         FileIO *configFile = fOpen(mod_config_path.c_str(), "r");
         if (configFile) {
             fClose(configFile);
@@ -876,6 +885,7 @@ void RSDK::LoadMods(bool newOnly, bool32 getVersion)
             PrintLog(PRINT_ERROR, "Mods folder scanning error: Could not list directory %s", modPathStr.c_str());
         }
         RSDK::PrintLog(RSDK::PRINT_NORMAL, "[MOD_FLOW] LoadMods: Finished direct mod folder scan.");
+		}
     }
 #endif // !__PS3__ && GCC >=8 ELSE
 

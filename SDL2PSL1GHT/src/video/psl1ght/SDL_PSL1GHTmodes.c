@@ -45,6 +45,10 @@ PSL1GHT_InitModes(_THIS)
     assert(videoGetState(0, 0, &state) == 0); // Get the state of the display
     assert(state.state == 0); // Make sure display is enabled
 
+	if (state.displayMode.resolution == VIDEO_RESOLUTION_576) {
+		state.displayMode.resolution = VIDEO_RESOLUTION_480;
+	}
+
     // Get the current resolution
 	videoResolution res;
     assert(videoGetResolution(state.displayMode.resolution, &res) == 0);
@@ -80,8 +84,10 @@ static SDL_DisplayMode ps3fb_modedb[] = {
     /* Native resolutions (progressive, "fullscreen") */
     {SDL_PIXELFORMAT_ARGB8888, 1920, 1080, 0, NULL}, // 1080p
     {SDL_PIXELFORMAT_ARGB8888, 1280, 720, 0, NULL}, // 720p
-    {SDL_PIXELFORMAT_ARGB8888, 720, 480, 0, NULL}, // 480p
-    {SDL_PIXELFORMAT_ARGB8888, 720, 576, 0, NULL}, // 576p
+    {SDL_PIXELFORMAT_ARGB8888, 720, 480, 0, NULL}, // 480p 16:9
+    {SDL_PIXELFORMAT_ARGB8888, 720, 576, 0, NULL}, // 576p 16:9
+    {SDL_PIXELFORMAT_ARGB8888, 640, 480, 0, NULL}, // 480p 4:3
+    {SDL_PIXELFORMAT_ARGB8888, 640, 576, 0, NULL}, // 576p 4:3
 };
 
 /* PS3 videomode number according to ps3fb_modedb */
@@ -114,6 +120,20 @@ static PSL1GHT_DisplayModeData ps3fb_data[] = {
 		VIDEO_ASPECT_16_9, 
 		{0, 0, 0, 0, 0, 0, 0, 0, 0},
 		720 * 4
+	}},
+	{{
+		VIDEO_RESOLUTION_480,
+		VIDEO_BUFFER_FORMAT_XRGB,
+		VIDEO_ASPECT_4_3,
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		640 * 4
+	}},
+	{{
+		VIDEO_RESOLUTION_576,
+		VIDEO_BUFFER_FORMAT_XRGB,
+		VIDEO_ASPECT_4_3,
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		640 * 4
 	}},
 };
 
